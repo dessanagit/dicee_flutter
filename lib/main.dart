@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -27,6 +29,7 @@ class _DicePageState extends State<DicePage> {
   // if inside the build method, it is going to be rebuilding every time on hotreload, etc.
 //  CONCLUSION: HERE YOU CREATE THE VARIABLE
   int leftDiceNumber = 1;
+  int rightDiceNumber = 1;
   @override
   Widget build(BuildContext context) {
 // HERE YOU UPDATE THE VARIABLE (changing the State)
@@ -39,11 +42,15 @@ class _DicePageState extends State<DicePage> {
           Expanded(
             child: FlatButton(
               onPressed: () {
-                setState(() {
-                  leftDiceNumber = 5;
-                  print('Left button got pressed');
-                });
-              },
+                setState(
+                  () {
+                    // nextInt() method Generates a non-negative random integer uniformly distributed in the range from 0 (inclusive) to max (exclusive).
+                    // So it is necessary to add +1 to achieve the range between 1 and 6.
+                    leftDiceNumber = Random().nextInt(6) + 1; // 0 - 5 => 1 - 6
+                    print('Left button got pressed');
+                  },
+                );
+              }, // void callback
               // String Interpolation -> To insert a variable inside a string uses dollar sign ($).
               child: Image.asset("images/dice$leftDiceNumber.png"),
             ),
@@ -51,9 +58,13 @@ class _DicePageState extends State<DicePage> {
           Expanded(
             child: FlatButton(
               // Arrow function
-              onPressed: () =>
-                  print('Right button got pressed.'), // void callback
-              child: Image.asset("images/dice1.png"),
+              onPressed: () {
+                setState(() {
+                  rightDiceNumber = Random().nextInt(6) + 1;
+                  print('Right button got pressed.');
+                });
+              }, // void callback
+              child: Image.asset("images/dice$rightDiceNumber.png"),
             ),
           ),
         ],
